@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Testy</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd"];
+
+        function init() {
+            document.getElementById("sessid").value = localStorage.sessid;
+            document.getElementById("zadanie").value = window.location.hash.substr(1);
+            get(
+                'getexerciseiddata', {
+                    id: window.location.hash.substr(1),
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = '<tr><td>Id</td><td></td><td></td></tr>';
+                    for (i = 0; i < data.file.length; i++) {
+                        tmp += '<tr>\
+                            <td>' + (i + 1) + '</td>\
+							<td>' + data.file[i] + '</td>\
+							<td onclick="window.location.href=\'/sprawdzarka/admin/file/#data-' + window.location.hash.substr(1) + '-' + data.file[i] + '.in\'">Wejście</td>\
+							<td onclick="window.location.href=\'/sprawdzarka/admin/file/#data-' + window.location.hash.substr(1) + '-' + data.file[i] + '.out\'">Wyjście</td>\
+							<td onclick="get(\
+				\'delfiles\',\
+                {\
+                    file1:\'data-' + window.location.hash.substr(1) + '-' + data.file[i] + '.in\',\
+                    file2:\'data-' + window.location.hash.substr(1) + '-' + data.file[i] + '.out\',\
+					sessid:localStorage.sessid\
+				},\
+				function(data)\
+				{\
+					window.location.reload();\
+				});">Usuń</td>\
+						</tr>';
+                    }
+                    document.getElementById('table').innerHTML = tmp;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/admin/main/">
+					Zgłoszenia
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/zadania/">
+					Zadania
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/nowe/">
+					Dodaj zadanie
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-head">
+            Nowy test (wejście i wyjście)
+        </div>
+        <form method="POST" action="/sprawdzarka/uploaddata/" enctype="multipart/form-data">
+            <input id="sessid" name="sessid" type="hidden" required="" />
+            <input id="zadanie" name="zadanie" type="hidden" required="" /> Wejście
+            <br><br>
+            <input name="file1" type="file" required="" accept=".txt" />
+            <br><br>Wyjście
+            <br><br>
+            <input name="file2" type="file" required="" accept=".txt" />
+            <input type="submit" value="Wgraj" />
+        </form>
+        <br>
+    </div>
+
+    <div class="table-div">
+        <table>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

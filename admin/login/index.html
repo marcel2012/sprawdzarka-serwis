@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Logowanie</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+</head>
+
+<body>
+    <div class="box">
+        <div class="box-head">
+            Administracja
+        </div>
+        <form onsubmit="
+				event.preventDefault();
+				get(
+				'login-admin',
+				{
+					email:document.getElementById('email').value,
+					pass:document.getElementById('pass').value.hashCode()
+				},
+				function(data)
+				{
+					localStorage.sessid=data.sessid;
+					localStorage.name=data.name;
+					localStorage.id=data.id;
+					window.location.href='/sprawdzarka/admin/main/';
+				},
+					['Nieprawidłowy format email',
+					'Podaj email',
+					'Adres email za długi',
+					'Podaj hasło',
+					'Hasło za długie',
+					'Błąd logowania']
+				);
+				return false;">
+            <input id="email" type="email" maxlength="50" placeholder="email" required="" /><br>
+            <input id="pass" type="password" maxlength="50" placeholder="hasło" required="" /><br>
+            <input type="submit" value="Zaloguj się" />
+        </form>
+        <br>
+        <br>
+    </div>
+</body>
+
+</html>

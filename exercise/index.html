@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Zadanie</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        function init() {
+            get(
+                'getexerciseid', {
+                    id: window.location.hash.substr(1),
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    document.getElementById("nazwa").innerHTML = data.exercise[0].nazwa;
+                    document.getElementById("opis").innerHTML = data.exercise[0].opis;
+                    document.getElementById("wejscie").innerHTML = data.exercise[0].wejscie;
+                    document.getElementById("wyjscie").innerHTML = data.exercise[0].wyjscie;
+                    document.getElementById("input").innerHTML = data.exercise[0].input;
+                    document.getElementById("output").innerHTML = data.exercise[0].output;
+                    document.getElementById("tests").innerHTML = data.exercise[0].tests;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/main/">
+					Zgłoszenia
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/zadania/">
+					Zadania
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="main-box">
+        <h1 id="nazwa">
+        </h1>
+        <h3>Opis</h3>
+        <h5 id="opis">
+        </h5>
+        <h3>Wejście</h3>
+        <h5 id="wejscie">
+        </h5>
+        <h3>Wyjście</h3>
+        <h5 id="wyjscie">
+        </h5>
+        <h3>Przykład</h3>
+        <h5>Dla danych wejściowych:</h5>
+        <h5 id="input">
+        </h5>
+        <h5>Poprawną odpowiedzią jest:</h5>
+        <h5 id="output">
+        </h5>
+        <h3>Testy</h3>
+        <h5 id="tests">
+        </h5>
+    </div>
+</body>
+
+</html>

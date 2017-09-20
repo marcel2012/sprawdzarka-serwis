@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Nowe zadanie</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <style>
+        textarea {
+            width: 100%;
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/admin/main/">
+                        Zgłoszenia
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/zadania/">
+                        Zadania
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/nowe/">
+                        Dodaj zadanie
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="main-box">
+        <input type="text" maxlength="30" id="nazwa" /><br><br>Maksymalny czas wykonywania <input type="number" min=50 max=200 id="maxtime" /> ms (50-200)
+        <h3>Opis</h3>
+        <textarea maxlength="1000" id="opis"></textarea>
+        <h3>Wejście</h3>
+        <textarea maxlength="1000" id="wejscie"></textarea>
+        <h3>Wyjście</h3>
+        <textarea maxlength="1000" id="wyjscie"></textarea>
+        <h3>Przykład</h3>
+        <h5>Dla danych wejściowych:</h5>
+        <textarea maxlength="500" id="input"></textarea>
+        <h5>Poprawną odpowiedzią jest:</h5>
+        <textarea maxlength="500" id="output"></textarea>
+        <h3>Testy</h3>
+        <textarea maxlength="500" id="tests"></textarea>
+        <input type="submit" value="zapisz" onclick="
+        get(
+            'addexercise', {
+                sessid: localStorage.sessid,
+                maxtime:document.getElementById('maxtime').value,
+                nazwa:document.getElementById('nazwa').value.replace(/\n/g, '<br>'),
+                opis:document.getElementById('opis').value.replace(/\n/g, '<br>'),
+                wejscie:document.getElementById('wejscie').value.replace(/\n/g, '<br>'),
+                wyjscie:document.getElementById('wyjscie').value.replace(/\n/g, '<br>'),
+                input:document.getElementById('input').value.replace(/\n/g, '<br>'),
+                output:document.getElementById('output').value.replace(/\n/g, '<br>'),
+                tests:document.getElementById('tests').value.replace(/\n/g, '<br>')
+            },
+            function(data) {
+                window.history.back();
+            }, ['Nie masz uprawnień']
+        );" />
+    </div>
+</body>
+
+</html>

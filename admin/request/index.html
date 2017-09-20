@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Zgłoszenie</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        var statusy = ["Błąd kompilacji", "Błąd wykonania", "Przekroczono limit czasu", "OK", "Zła odpowiedź"];
+
+        function init() {
+            tmp = '<tr><td>Test</td><td>Status</td><td>Czas</td><td>Punkty</td></tr>';
+            document.getElementById('table').innerHTML = tmp;
+            get(
+                'getrequestid', {
+                    id: window.location.hash.substr(1),
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    document.getElementById("log").innerText = atob(data.log);
+                    for (i = 0; i < data.request.length; i++) {
+                        tmp = '<tr>\
+							<td>' + data.request[i].test + '</td>\
+							<td>' + statusy[data.request[i].status] + '</td>\
+							<td>' + (data.request[i].time / 1000) + 's (max. ' + (data.maxtime / 1000) + 's)</td>\
+							<td>' + data.request[i].wynik + '</td>\
+						</td></tr>';
+                        document.getElementById('table').innerHTML += tmp;
+                    }
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/admin/main/">
+                        Zgłoszenia
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/zadania/">
+                        Zadania
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/nowe/">
+                        Dodaj zadanie
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="main-box">
+        <h3>Log kompilatora</h3>
+        <h5 id="log">
+        </h5>
+        <h4>Kody błedów</h4>
+        <h5>Błąd kompilacji - wkradła się literówka, albo używasz biblioteki windows.h, której na linuxie nie ma</h5>
+        <h5>Błąd wykonania - program nie zwraca return 0, albo wystapił błąd pamięci - odniesienie się do nieistniejącego indeksu, albo przekroczenie limitu pamięci</h5>
+        <h5>Przekroczenie limitu czasu - twój program działa zbyt wolno</h5>
+        <h5>Zła odpowiedź - odpowiedź inna niż oczekiwana :)</h5>
+    </div>
+    <div class="table-div">
+        <table>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

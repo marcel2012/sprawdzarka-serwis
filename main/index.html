@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Główna</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd"];
+
+        function init() {
+            document.getElementById("sessid").value = localStorage.sessid;
+            tmp = '<tr><td>Zadanie</td><td>Status</td><td>Wynik</td></tr>';
+            document.getElementById('table').innerHTML = tmp;
+            get(
+                'getrequests', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    for (i = 0; i < data.request.length; i++) {
+                        tmp = '<tr style="background:' + (data.request[i].id == data.request[i].id2 ? getcolor(data.request[i].wynik) : "white") + '" onclick="window.location.href=\'/sprawdzarka/request/#' + data.request[i].id + '\'">\
+							<td>' + data.request[i].zadanie + '</td>\
+							<td>' + statusy[data.request[i].status] + '</td>\
+							<td>' + (data.request[i].status > 0 ? data.request[i].wynik : '') + '</td>\
+						</td></tr>';
+                        document.getElementById('table').innerHTML += tmp;
+                    }
+                }, ['Nie masz uprawnień']
+            );
+            get(
+                'getexercises', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.exercise.length; i++) {
+                        tmp += '<option value=' + data.exercise[i].id + '>' + data.exercise[i].nazwa + '</option>';
+                    }
+                    document.getElementById('select').innerHTML = tmp;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/main/">
+					Zgłoszenia
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/zadania/">
+					Zadania
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-head">
+            Wyślij zgłoszenie
+        </div>
+        <form method="POST" action="/sprawdzarka/upload/" enctype="multipart/form-data">
+            <input id="sessid" name="sessid" type="hidden" required="" />
+            <select name="zadanie" id="select">
+				</select>
+            <input name="file" type="file" required="" accept=".cpp" />
+            <input type="submit" value="Wgraj" />
+        </form>
+        <br>
+    </div>
+
+    <div class="table-div">
+        <table>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

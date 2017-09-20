@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Rejestracja</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+</head>
+
+<body>
+    <div class="box">
+        <div class="box-head">
+            Rejestracja
+        </div>
+        <form onsubmit="
+				event.preventDefault();
+				get(
+				'register',
+				{
+					email:document.getElementById('email').value,
+					pass:document.getElementById('pass').value.hashCode(),
+					name:document.getElementById('name').value,
+					surname:document.getElementById('surname').value,
+					class:document.getElementById('class').value
+				},
+				function(data)
+				{
+					alert('Rejestracja przebiegła pomyślnie.');
+					window.location.href='/sprawdzarka/login/';
+				},
+					['Nieprawidłowy format email',
+					'Podaj email',
+					'Adres email za długi',
+					'Podaj hasło',
+					'Hasło za długie',
+					'Podaj imię',
+					'Imię za długie',
+					'Podaj nazwisko',
+					'Nazwisko za długie']
+				);
+				return false;">
+            <input id="name" type="text" maxlength="15" placeholder="imię" required="" /><br>
+            <input id="surname" type="text" maxlength="15" placeholder="nazwisko" required="" /><br>
+            <input id="email" type="email" maxlength="50" placeholder="email" required="" /><br>
+            <input id="pass" type="password" maxlength="50" placeholder="hasło" required="" /><br>
+            <select id="class">
+					<option value="2">2 gim</option>
+					<option value="3">3 gim</option>
+					<option value="4">1 lic</option>
+					<option value="5" selected="selected">2 lic</option>
+					<option value="6">3 lic</option>
+				</select>
+            <input type="submit" value="Zarejestruj się" />
+        </form>
+        <input type="submit" onclick="window.location.href='/sprawdzarka/login/'" value="Logowanie" />
+        <br>
+        <br>
+    </div>
+</body>
+
+</html>

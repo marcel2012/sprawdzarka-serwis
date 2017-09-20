@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Ranking</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        function init() {
+            get(
+                'getranking', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "<tr><td>Imię i nazwisko</td>"
+                    for (i = 0; i < data.zadania.length; i++)
+                        tmp += "<td>" + data.zadania[i].substr(0, 3).toUpperCase() + "</td>";
+                    tmp += "<td>Razem</td></tr>";
+                    data.users.sort(function(a, b) {
+                        if (b.sum != a.sum)
+                            return b.sum - a.sum;
+                        else
+                            return a.sum2 - b.sum2;
+                    });
+                    for (i = 0; i < data.users.length; i++) {
+                        tmp += "<tr>";
+                        tmp += "<td>" + data.users[i].name + "</td>";
+                        for (j = 0; j < data.users[i].zadania.length; j++) {
+                            tmp += "<td style='background:" + getcolor(data.users[i].zadania[j].wynik) + "'>" + (data.users[i].zadania[j].wynik >= 0 ? data.users[i].zadania[j].wynik + " (" + data.users[i].zadania[j].sum + ")" : "") + "</td>";
+                        }
+                        tmp += "<td>" + data.users[i].sum + " (" + data.users[i].sum2 + ")" + "</td></tr>";
+                    }
+                    document.getElementById('table').innerHTML += tmp;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/main/">
+					Zgłoszenia
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/zadania/">
+					Zadania
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="table-div">
+        <table>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
