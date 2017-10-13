@@ -1,4 +1,4 @@
-var api_www_address = "https://serial.nazwa.pl/sprawdzarka/api/";
+var api_www_address = "/sprawdzarka/api/";
 String.prototype.hashCode = function() {
     var hash = 0,
         i, chr;
@@ -6,7 +6,7 @@ String.prototype.hashCode = function() {
     for (i = 0; i < this.length; i++) {
         chr = this.charCodeAt(i);
         hash = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
+        hash |= 0;
     }
     return hash;
 };
@@ -49,10 +49,8 @@ function get(file, params, todo, error) {
                     alert(error[data.error - 1]);
             } else
                 todo(data);
-        } else if (this.readyState == 4) {
-            //alert("Błąd połączenia");
+        } else if (this.readyState == 4)
             document.getElementsByClassName("main-head")[0].style.background = "rgba(255,0,0,0.8)";
-        }
     };
     xhttp.timeout = 2000;
     xhttp.send();
