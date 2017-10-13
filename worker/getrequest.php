@@ -4,7 +4,7 @@
 	if(!sql)
 		die('-1');
 	if($row=mysqli_fetch_assoc($sql))
-		die($row["id"]." ".$row["zadanie"]." 1");
+		die($row["id"]." ".$row["zadanie"]." ".$row["tester"]);
 	else
 		die('-1');
 ?>

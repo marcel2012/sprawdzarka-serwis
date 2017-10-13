@@ -6,7 +6,7 @@
 		die('{"query":0,"error":-2}');
     if(!isset($_SESSION["admin"]))
         die('{"query":0,"error":1}');
-        unlink("../files/".$_GET["file1"]);
-        unlink("../files/".$_GET["file2"]);
+    unlink("../files/".$_GET["file1"]);
+    unlink("../files/".$_GET["file2"]);
     echo '{"query":1}';
 ?>
