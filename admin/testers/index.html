@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
+    <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
+    <title>IKSDE - Kody sprawdzające</title>
+    <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
+    <meta name="theme-color" content="#1aa98d">
+    <meta name="msapplication-navbutton-color" content="#1aa98d">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <script>
+        function init() {
+            tmp = '<tr><td>Id</td><td>Nazwa</td><td></td><td></td></tr>';
+            document.getElementById('table').innerHTML = tmp;
+            get(
+                'gettesters', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.tester.length; i++) {
+                        tmp += '<tr>\
+							<td>' + data.tester[i].id + '</td>\
+							<td>' + data.tester[i].name + '</td>\
+							<td onclick="window.location.href=\'/sprawdzarka/admin/file/#../tester/' + data.tester[i].id + '.cpp\'">Podgląd</td>\
+							<td onclick="get(\
+				\'deltester\',\
+                {\
+                    id:' + data.tester[i].id + ',\
+					sessid:localStorage.sessid\
+				},\
+				function(data)\
+				{\
+					window.location.reload();\
+				});">Usuń</td>\
+						</tr>';
+                    }
+                    document.getElementById('table').innerHTML = tmp;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div class="main-head">
+        Internetowy Kwalifikowany System Doskonalenia Edukacji
+    </div>
+    <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/main/">
+					Zgłoszenia
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/zadania/">
+					Zadania
+				</a>
+        </div>
+        <div>
+            <a href="/sprawdzarka/admin/ranking/">
+					Ranking
+				</a>
+        </div>
+        <div>
+            <a onclick="get(
+				'logout',
+				{
+					sessid:localStorage.sessid
+				},
+				function(data)
+				{
+					localStorage.clear();
+					window.location.href='/sprawdzarka/';
+				});">Wyloguj</a>
+        </div>
+    </div>
+    <div class="table-div">
+        <table>
+            <tbody id="table">
+            </tbody>
+        </table>
+    </div>
+    <center><input onclick='window.location.href="/sprawdzarka/admin/addtester/"' type='submit' value='Nowy kod sprawdzający' /></center>
+</body>
+
+</html>
