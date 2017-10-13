@@ -38,15 +38,14 @@
 					'Adres email za długi',
 					'Podaj hasło',
 					'Hasło za długie',
-					'Błąd logowania']
+					'Błąd logowania lub konto nie istnieje. Na potrzeby OI wymagana jest ponowna rejestracja.']
 				);
 				return false;">
             <input id="email" type="email" maxlength="50" placeholder="email" required="" /><br>
             <input id="pass" type="password" maxlength="50" placeholder="hasło" required="" /><br>
             <input type="submit" value="Zaloguj się" />
         </form>
-        <input type="submit" style="width:123px;" onclick="window.location.href='/sprawdzarka/register/'" value="Rejestracja" />
-        <input type="submit" style="width:123px;" onclick="window.location.href='/sprawdzarka/reset/'" value="Nowe hasło" />
+        <input type="submit" onclick="window.location.href='/sprawdzarka/register/'" value="Rejestracja" />
         <br>
         <br>
     </div>
