@@ -17,13 +17,45 @@
             min-height: 100px;
         }
     </style>
+    <script>
+        function init() {
+            get(
+                'getgroups', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.group.length; i++)
+                        tmp += '<option value="' + data.group[i].id + '">' + data.group[i].name + '</option>';
+                    document.getElementById("groups").innerHTML = tmp;
+                    document.getElementById("groups").value = data.mygroup;
+                }, ['Nie masz uprawnień']
+            );
+            get(
+                'gettesters', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.tester.length; i++)
+                        tmp += '<option value="' + data.tester[i].id + '">' + data.tester[i].name + '</option>';
+                    document.getElementById("tester").innerHTML = tmp;
+                }, ['Nie masz uprawnień']
+            );
+        }
+    </script>
 </head>
 
-<body>
+<body onload="init()">
     <div class="main-head">
         Internetowy Kwalifikowany System Doskonalenia Edukacji
     </div>
     <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
         <div>
             <a href="/sprawdzarka/admin/main/">
                         Zgłoszenia
@@ -32,11 +64,6 @@
         <div>
             <a href="/sprawdzarka/admin/zadania/">
                         Zadania
-                    </a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-                        Dodaj zadanie
                     </a>
         </div>
         <div>
@@ -58,7 +85,11 @@
         </div>
     </div>
     <div class="main-box">
-        <input type="text" maxlength="30" id="nazwa" /><br><br>Maksymalny czas wykonywania <input type="number" min=50 max=200 id="maxtime" /> ms (50-200)
+        <input type="text" maxlength="30" id="nazwa" /><br><br>Maksymalny czas wykonywania <input type="number" min=50 max=500 value=400 id="maxtime" /> ms (100-500)
+        <h3>Dla kursu</h3>
+        <select id="groups">
+
+        </select>
         <h3>Opis</h3>
         <textarea maxlength="1000" id="opis"></textarea>
         <h3>Wejście</h3>
@@ -72,6 +103,10 @@
         <textarea maxlength="500" id="output"></textarea>
         <h3>Testy</h3>
         <textarea maxlength="500" id="tests"></textarea>
+        <h3>Kod sprawdzający</h3>
+        <select id="tester">
+
+        </select><br>
         <input type="submit" value="zapisz" onclick="
         get(
             'addexercise', {
@@ -83,12 +118,16 @@
                 wyjscie:document.getElementById('wyjscie').value.replace(/\n/g, '<br>'),
                 input:document.getElementById('input').value.replace(/\n/g, '<br>'),
                 output:document.getElementById('output').value.replace(/\n/g, '<br>'),
-                tests:document.getElementById('tests').value.replace(/\n/g, '<br>')
+                tests:document.getElementById('tests').value.replace(/\n/g, '<br>'),
+                groups:document.getElementById('groups').value,
+                tester:document.getElementById('tester').value
             },
             function(data) {
                 window.history.back();
             }, ['Nie masz uprawnień']
         );" />
+
+        <u><h5 onclick="window.location.href='/sprawdzarka/admin/addtester/'">Dodaj kod sprawdzający</h5></u>
     </div>
 </body>
 

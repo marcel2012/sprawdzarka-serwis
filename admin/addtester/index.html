@@ -6,22 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
     <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
-    <title>IKSDE - Plik</title>
+    <title>IKSDE - Kody sprawdzające</title>
     <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
     <meta name="theme-color" content="#1aa98d">
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
     <script>
         function init() {
-            get(
-                'getfile', {
-                    name: window.location.hash.substr(1),
-                    sessid: localStorage.sessid
-                },
-                function(data) {
-                    document.getElementById("file").innerHTML = data.file.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
-                }, ['Nie masz uprawnień']
-            );
+            document.getElementById("sessid").value = localStorage.sessid;
         }
     </script>
 </head>
@@ -38,13 +30,13 @@
         </div>
         <div>
             <a href="/sprawdzarka/admin/main/">
-                        Zgłoszenia
-                    </a>
+					Zgłoszenia
+				</a>
         </div>
         <div>
             <a href="/sprawdzarka/admin/zadania/">
-                        Zadania
-                    </a>
+					Zadania
+				</a>
         </div>
         <div>
             <a href="/sprawdzarka/admin/ranking/">
@@ -64,8 +56,17 @@
 				});">Wyloguj</a>
         </div>
     </div>
-    <div class="main-box">
-        <p id="file"></p>
+    <div class="box">
+        <div class="box-head">
+            Nowy kod sprawdzający
+        </div>
+        <form method="POST" action="/sprawdzarka/api/addtester.php" enctype="multipart/form-data">
+            <input id="sessid" name="sessid" type="hidden" required="" /><br> Kod sprawdzający<br>
+            <textarea name="name" rows="1" required="" placeholder="Nazwa typu sprawdzania"></textarea>
+            <textarea name="code" rows="20" required=""></textarea>
+            <input type="submit" value="Wgraj" />
+        </form>
+        <br>
     </div>
 </body>
 

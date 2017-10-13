@@ -10,6 +10,7 @@
 		wynik=0,
 		info='',
 		info2='',
+		`date`=NOW(),
 		info3=''");
 	if(!$sql)
 		die('{"query":0,"error":-1}');

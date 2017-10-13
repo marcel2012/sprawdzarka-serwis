@@ -12,26 +12,39 @@
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
     <script>
-        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd"];
+        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd", "Błąd skryptu sprawdzarnia"];
+
+        function update() {
+            a = document.getElementsByClassName("zadanie-tr");
+            check = !document.getElementById("unique").checked;
+            task = document.getElementById("select2").value;
+            clas = document.getElementById("select3").value;
+            for (i = 0; i < a.length; i++)
+                a[i].style.display = ((check == 0 || a[i].getAttribute("class").indexOf("zadanie-unique-1") != -1) && (task == -1 || a[i].getAttribute("class").indexOf("zadanie-id-" + task) != -1) && (clas == -1 || a[i].getAttribute("class").indexOf("zadanie-class-" + clas) != -1) ? "" : "none");
+        }
 
         function init() {
             document.getElementById("sessid").value = localStorage.sessid;
-            tmp = '<tr><td>Zadanie</td><td>Imię i nazwisko</td><td>Status</td><td>Wynik</td></tr>';
+            tmp = '<tr><td>Data</td><td>Imię i nazwisko</td><td>Zadanie</td><td>Status</td><td>Wynik</td><td>Plik</td></tr>';
             document.getElementById('table').innerHTML = tmp;
             get(
                 'getrequests', {
                     sessid: localStorage.sessid
                 },
                 function(data) {
+                    tmp = "";
                     for (i = 0; i < data.request.length; i++) {
-                        tmp = '<tr style="background:' + (data.request[i].id == data.request[i].id2 ? getcolor(data.request[i].wynik) : "white") + '" onclick="window.location.href=\'/sprawdzarka/admin/request/#' + data.request[i].id + '\'">\
-                            <td>' + data.request[i].zadanie + '</td>\
+                        tmp += '<tr class="zadanie-tr zadanie-unique-' + (data.request[i].id == data.request[i].id2 ? 1 : 0) + ' zadanie-id-' + data.request[i].zadanieid + ' zadanie-class-' + data.request[i].class + '" style="background:' + (data.request[i].id == data.request[i].id2 ? getcolor(data.request[i].wynik) : "white") + '" onclick="window.location.href=\'/sprawdzarka/admin/request/#' + data.request[i].id + '\'">\
+                            <td>' + data.request[i].date.substr(8, 2) + "-" + data.request[i].date.substr(5, 2) + '</td>\
                             <td>' + data.request[i].name + '</td>\
+                            <td>' + data.request[i].zadanie + '</td>\
 							<td>' + statusy[data.request[i].status] + '</td>\
 							<td>' + (data.request[i].status > 0 ? data.request[i].wynik : '') + '</td>\
+							<td onclick="event.stopPropagation();window.location.href=\'/sprawdzarka/admin/file#' + data.request[i].id + '.cpp\'">Kod źródłowy</td>\
 						</td></tr>';
-                        document.getElementById('table').innerHTML += tmp;
                     }
+                    document.getElementById('table').innerHTML += tmp;
+                    update();
                 }, ['Nie masz uprawnień']
             );
             get(
@@ -44,6 +57,7 @@
                         tmp += '<option value=' + data.exercise[i].id + '>' + data.exercise[i].nazwa + '</option>';
                     }
                     document.getElementById('select').innerHTML = tmp;
+                    document.getElementById('select2').innerHTML += tmp;
                 }, ['Nie masz uprawnień']
             );
         }
@@ -56,6 +70,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+					Kursy
+				</a>
+        </div>
+        <div>
             <a href="/sprawdzarka/admin/main/">
 					Zgłoszenia
 				</a>
@@ -63,11 +82,6 @@
         <div>
             <a href="/sprawdzarka/admin/zadania/">
 					Zadania
-				</a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-					Dodaj zadanie
 				</a>
         </div>
         <div>
@@ -88,6 +102,31 @@
 				});">Wyloguj</a>
         </div>
     </div>
+    <div class="main-menu">
+        <div>
+            <a>Filtruj:</a>
+        </div>
+        <div>
+            <label>Wszystkie zgłoszenia: <input id="unique" onchange="update()" type="checkbox"></label>
+        </div>
+        <div>
+            Zadanie:
+            <select onchange="update()" style="padding:0;margin:0;background:rgb(221, 221, 221);width:auto;min-width:100px;" name="zadanie" id="select2">
+                <option value="-1">Wszystkie</option>
+            </select>
+        </div>
+        <div>
+            Klasa:
+            <select onchange="update()" style="padding:0;margin:0;background:rgb(221, 221, 221);width:auto;min-width:100px;" id="select3">
+                <option value="-1">Wszystkie</option>
+                <option value="2">2 gim</option>
+                <option value="3">3 gim</option>
+                <option value="4">1 lic</option>
+                <option value="5">2 lic</option>
+                <option value="6">3 lic</option>
+            </select>
+        </div>
+    </div>
     <div class="box">
         <div class="box-head">
             Wyślij zgłoszenie
@@ -95,13 +134,15 @@
         <form method="POST" action="/sprawdzarka/upload/" enctype="multipart/form-data">
             <input id="sessid" name="sessid" type="hidden" required="" />
             <select name="zadanie" id="select">
-				</select>
-            <input name="file" type="file" required="" accept=".cpp" />
+                </select>
+            <div class="file-upload">
+                <input name="file" onchange="this.parentNode.childNodes[3].value=(this.value.length?this.value.substr(this.value.lastIndexOf('\\')+1):'Wybierz');" type="file" required="" accept=".cpp" />
+                <input type="fakefile" onclick="this.parentNode.childNodes[1].click();" value="Wybierz" readonly/>
+            </div>
             <input type="submit" value="Wgraj" />
         </form>
         <br>
     </div>
-
     <div class="table-div">
         <table>
             <tbody id="table">

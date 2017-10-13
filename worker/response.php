@@ -26,10 +26,12 @@
 			$status=1;
 		if($_GET["status"]==4)
 			$status=3;
+		if($_GET["status"]==5)
+			$status=4;
 		$punkt=100/sizeof(glob("../files/data-".$_GET["zadanie"]."-*.in"));
 		$wynik=($_GET["status"]!=3?0:(intval($_GET["time"])<$ro["maxtime"]/2?$punkt:intval($punkt*2*($ro["maxtime"]-intval($_GET["time"]))/$ro["maxtime"])));
 		$sql=mysqli_query($mysqli,"UPDATE request SET info='".base64_decode($_GET["info"])."', info2='".base64_decode($_GET["info2"])."', ".(isset($_GET["info3"])?"info3='".base64_decode($_GET["info3"])."',":"")." status=".$status." WHERE id=".$row["id"]);
-		if($_GET["status"]!=0)
+		if($_GET["status"]!=0 && $_GET["status"]!=5)
 		{
 			$sql=mysqli_query($mysqli,"INSERT INTO requestid SET 
 				`user`=".intval($row["user"]).",

@@ -6,6 +6,7 @@
 		die('{"query":0,"error":-2}');
     if(!isset($_SESSION["admin"]))
         die('{"query":0,"error":1}');
-    $list=glob("../files/data-".intval($_GET["id"])."-*.in");
-    echo '{"query":1,"file":'.escape(file_get_contents("../files/".$_GET["name"])).'}';
+	echo '{"query":1,"file":""}';
+	//blokada
+	//echo '{"query":1,"file":'.escape(mb_convert_encoding(file_get_contents("../files/".$_GET["name"]), 'HTML-ENTITIES', "UTF-8")).'}';
 ?>

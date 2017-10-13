@@ -13,17 +13,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
     <script>
         function init() {
-            tmp = '<tr><td>Zadanie</td><td>Wynik</td><td></td><td></td><td></td></tr>';
+            tmp = '<tr><td>Zadanie</td><td></td><td></td><td></td><td></td></tr>';
             document.getElementById('table').innerHTML = tmp;
             get(
                 'getexercises', {
                     sessid: localStorage.sessid
                 },
                 function(data) {
+                    tmp = "";
                     for (i = 0; i < data.exercise.length; i++) {
-                        tmp = '<tr style="background:' + getcolor(data.exercise[i].wynik) + '">\
+                        tmp += '<tr>\
 							<td>' + data.exercise[i].nazwa + '</td>\
-							<td>' + (data.exercise[i].wynik >= 0 ? data.exercise[i].wynik : "") + '</td>\
 							<td onclick="window.location.href=\'/sprawdzarka/admin/exercise/#' + data.exercise[i].id + '\'">Podgląd</td>\
 							<td onclick="window.location.href=\'/sprawdzarka/admin/edit/#' + data.exercise[i].id + '\'">Edytuj</td>\
 							<td onclick="window.location.href=\'/sprawdzarka/admin/editdata/#' + data.exercise[i].id + '\'">Testy</td>\
@@ -47,8 +47,8 @@
 					window.location.reload();\
 				});">' + (data.exercise[i].visible ? "Ukryj" : "Opublikuj") + '</td>\
 						</tr>';
-                        document.getElementById('table').innerHTML += tmp;
                     }
+                    document.getElementById('table').innerHTML = tmp;
                 }, ['Nie masz uprawnień']
             );
         }
@@ -61,6 +61,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
             <a href="/sprawdzarka/admin/main/">
 					Zgłoszenia
 				</a>
@@ -68,11 +73,6 @@
         <div>
             <a href="/sprawdzarka/admin/zadania/">
 					Zadania
-				</a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-					Dodaj zadanie
 				</a>
         </div>
         <div>
@@ -99,6 +99,7 @@
             </tbody>
         </table>
     </div>
+    <center><input onclick='window.location.href="/sprawdzarka/admin/nowe/"' type='submit' value='Nowe zadanie' /></center>
 </body>
 
 </html>

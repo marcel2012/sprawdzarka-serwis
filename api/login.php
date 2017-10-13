@@ -10,7 +10,7 @@
 		die('{"query":0,"error":4}');
 	if(strlen($_GET["pass"])>50)
 		die('{"query":0,"error":5}');
-	$sql=mysqli_query($mysqli,"SELECT id,name,pass FROM users WHERE login='".mysqli_real_escape_string($mysqli,$_GET["email"])."'");
+	$sql=mysqli_query($mysqli,"SELECT id,name,pass,groups FROM users WHERE login='".mysqli_real_escape_string($mysqli,$_GET["email"])."'");
 	if(!$sql)
 		die('{"query":0,"error":-1}');
 	if($row=mysqli_fetch_assoc($sql))
@@ -18,6 +18,8 @@
 		{
 			session_start();
 			$_SESSION["id"]=$row["id"];
+			$_SESSION["groups"]=$row["groups"];
+			mysqli_query($mysqli,"UPDATE users SET lastlogin=NOW() WHERE id=".$_SESSION["id"]);
 			die('{"query":1,"name":"'.$row["name"].'","id":'.$row["id"].',"sessid":"'.session_id().'"}');
 		}
 	die('{"query":0,"error":6}');

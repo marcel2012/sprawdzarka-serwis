@@ -1,11 +1,10 @@
 html,
 body {
     width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
     background: #f1f1f1;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 body {
@@ -58,7 +57,8 @@ input[type=email]:focus {
     border-width: 0 0 2px 0;
 }
 
-input[type=submit] {
+input[type=submit],
+input[type=fakefile] {
     width: 250px;
     border-radius: 3px;
     border: 0;
@@ -69,6 +69,16 @@ input[type=submit] {
     color: #fff;
     background: #1aa98d;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1), 2px 2px 15px rgba(0, 0, 0, 0.3);
+}
+
+input[type=fakefile] {
+    text-align: center;
+    font-size: 1em;
+}
+
+input[type=file] {
+    opacity: 0;
+    position: absolute;
 }
 
 .mini {
@@ -129,8 +139,11 @@ a:active {
 select {
     outline: none;
     background: rgba(0, 0, 0, 0);
-    border: 0;
-    padding: 5px;
+    padding: 10px 5px;
+    margin: 0 0 10px 0;
+    border-radius: 5px;
+    border-color: #1aa98d;
+    width: 250px;
 }
 
 .table-div {
@@ -160,4 +173,9 @@ td {
     padding: 10px;
     border: #f1f1f1 1px solid;
     text-align: center;
+}
+
+textarea {
+    width: 90%;
+    text-align: left;
 }

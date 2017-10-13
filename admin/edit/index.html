@@ -12,6 +12,9 @@
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
     <script>
+        var group = -1;
+        var tester = -1;
+
         function init() {
             get(
                 'getexerciseid', {
@@ -27,6 +30,44 @@
                     document.getElementById("output").value = data.exercise[0].output.replace(/<br>/g, "\n");
                     document.getElementById("tests").value = data.exercise[0].tests.replace(/<br>/g, "\n");
                     document.getElementById('maxtime').value = data.exercise[0].maxtime;
+                    if (group == -1)
+                        group = data.exercise[0].groups;
+                    else
+                        document.getElementById("groups").value = data.exercise[0].groups;
+                    if (tester == -1)
+                        tester = data.exercise[0].tester;
+                    else
+                        document.getElementById("tester").value = data.exercise[0].tester;
+                }, ['Nie masz uprawnień']
+            );
+            get(
+                'getgroups', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.group.length; i++)
+                        tmp += '<option value="' + data.group[i].id + '">' + data.group[i].name + '</option>';
+                    document.getElementById("groups").innerHTML = tmp;
+                    if (group >= 0) {
+                        document.getElementById("groups").value = group;
+                    } else
+                        group = -2;
+                }, ['Nie masz uprawnień']
+            );
+            get(
+                'gettesters', {
+                    sessid: localStorage.sessid
+                },
+                function(data) {
+                    tmp = "";
+                    for (i = 0; i < data.tester.length; i++)
+                        tmp += '<option value="' + data.tester[i].id + '">' + data.tester[i].name + '</option>';
+                    document.getElementById("tester").innerHTML = tmp;
+                    if (tester >= 0) {
+                        document.getElementById("tester").value = tester;
+                    } else
+                        tester = -2;
                 }, ['Nie masz uprawnień']
             );
         }
@@ -45,6 +86,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
             <a href="/sprawdzarka/admin/main/">
                         Zgłoszenia
                     </a>
@@ -52,11 +98,6 @@
         <div>
             <a href="/sprawdzarka/admin/zadania/">
                         Zadania
-                    </a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-                        Dodaj zadanie
                     </a>
         </div>
         <div>
@@ -78,7 +119,11 @@
         </div>
     </div>
     <div class="main-box">
-        <input type="text" maxlength="30" id="nazwa" /><br><br>Maksymalny czas wykonywania <input type="number" min=50 max=200 id="maxtime" /> ms (50-200)
+        <input type="text" maxlength="30" id="nazwa" /><br><br>Maksymalny czas wykonywania <input type="number" min=50 max=200 id="maxtime" /> ms (100-500)
+        <h3>Dla kursu</h3>
+        <select id="groups">
+
+        </select>
         <h3>Opis</h3>
         <textarea maxlength="1000" id="opis"></textarea>
         <h3>Wejście</h3>
@@ -92,6 +137,10 @@
         <textarea maxlength="500" id="output"></textarea>
         <h3>Testy</h3>
         <textarea maxlength="500" id="tests"></textarea>
+        <h3>Kod sprawdzający</h3>
+        <select id="tester">
+
+        </select><br>
         <input type="submit" value="zapisz" onclick="
         get(
             'editexerciseid', {
@@ -104,12 +153,25 @@
                 wyjscie:document.getElementById('wyjscie').value.replace(/\n/g, '<br>'),
                 input:document.getElementById('input').value.replace(/\n/g, '<br>'),
                 output:document.getElementById('output').value.replace(/\n/g, '<br>'),
-                tests:document.getElementById('tests').value.replace(/\n/g, '<br>')
+                tests:document.getElementById('tests').value.replace(/\n/g, '<br>'),
+                groups:document.getElementById('groups').value,
+                tester:document.getElementById('tester').value
             },
             function(data) {
                 window.location.reload();
             }, ['Nie masz uprawnień']
         );" />
+        <u><h5 onclick="window.location.href='/sprawdzarka/admin/addtester/'">Dodaj kod sprawdzający</h5></u>
+        <u><h5 onclick="
+        get(
+            'delexercise', {
+                sessid: localStorage.sessid,
+                id:window.location.hash.substr(1)
+            },
+            function(data) {
+                window.history.back();
+            }, ['Nie masz uprawnień']
+        );">Usuń</h5></u>
     </div>
 </body>
 

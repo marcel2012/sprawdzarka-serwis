@@ -5,7 +5,7 @@
 	if(!isset($_SESSION["id"]))
 		die('{"query":0,"error":-2}');
     $sql=mysqli_query($mysqli,"SELECT id,name,surname FROM users ORDER BY id ASC");
-    $sqlz=mysqli_query($mysqli,"SELECT id,name FROM zadanie WHERE ".(!isset($_SESSION["admin"])?"visible=1":"1")." ORDER BY id ASC");
+    $sqlz=mysqli_query($mysqli,"SELECT id,name FROM zadanie WHERE ".(!isset($_SESSION["admin"])?"visible=1":"1")." AND groups=".$_SESSION["groups"]." ORDER BY id ASC");
 	if(!sql)
 		die('{"query":0,"error":-1}');
     echo '{"query":1,"zadania":[';
@@ -28,7 +28,7 @@
 			$f=true;
         echo '{"name":'.escape($row["name"]." ".$row["surname"]).',"zadania":[';
         $g=false;
-        $sq=mysqli_query($mysqli,"SELECT MAX(a.id) as rid FROM request a RIGHT JOIN zadanie b on a.zadanie=b.id AND (a.status=1 OR a.status=3) AND a.user=".$row["id"]." WHERE ".(!isset($_SESSION["admin"])?"b.visible=1":"1")." GROUP BY b.id ORDER BY b.id ASC");
+        $sq=mysqli_query($mysqli,"SELECT MAX(a.id) as rid FROM request a RIGHT JOIN zadanie b on a.zadanie=b.id AND (a.status=1 OR a.status=3) AND a.user=".$row["id"]." WHERE ".(!isset($_SESSION["admin"])?"b.visible=1":"1")." AND b.groups=".$_SESSION["groups"]." GROUP BY b.id ORDER BY b.id ASC");
         $sum=0;
         $sum2=0;
         while($ro=mysqli_fetch_assoc($sq))

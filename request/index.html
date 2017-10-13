@@ -26,7 +26,7 @@
                     document.getElementById("log").innerText = atob(data.log);
                     for (i = 0; i < data.request.length; i++) {
                         tmp = '<tr>\
-							<td>' + data.request[i].test + '</td>\
+							<td>' + (data.request[i].test + 1) + '</td>\
 							<td>' + statusy[data.request[i].status] + '</td>\
 							<td>' + (data.request[i].time / 1000) + 's (max. ' + (data.maxtime / 1000) + 's)</td>\
 							<td>' + data.request[i].wynik + '</td>\
@@ -44,6 +44,11 @@
         Internetowy Kwalifikowany System Doskonalenia Edukacji
     </div>
     <div class="main-menu">
+        <div>
+            <a href="/sprawdzarka/changegroup/">
+                        Kursy
+                    </a>
+        </div>
         <div>
             <a href="/sprawdzarka/main/">
 					Zgłoszenia

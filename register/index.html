@@ -42,7 +42,9 @@
 					'Podaj imię',
 					'Imię za długie',
 					'Podaj nazwisko',
-					'Nazwisko za długie']
+					'Nazwisko za długie',
+					'Zaznacz recaptcha',
+					'Email zajęty']
 				);
 				return false;">
             <input id="name" type="text" maxlength="15" placeholder="imię" required="" /><br>
@@ -55,7 +57,7 @@
 					<option value="4">1 lic</option>
 					<option value="5" selected="selected">2 lic</option>
 					<option value="6">3 lic</option>
-				</select>
+				</select><br>
             <input type="submit" value="Zarejestruj się" />
         </form>
         <input type="submit" onclick="window.location.href='/sprawdzarka/login/'" value="Logowanie" />

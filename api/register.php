@@ -18,9 +18,11 @@
 		die('{"query":0,"error":8}');
 	if(strlen($_GET["surname"])>15)
 		die('{"query":0,"error":9}');
-	$sql=mysqli_query($mysqli,"INSERT INTO users SET admin=0, class=".intval($_GET["class"]).", surname='".mysqli_real_escape_string($mysqli,$_GET["surname"])."', name='".mysqli_real_escape_string($mysqli,$_GET["name"])."',login='".mysqli_real_escape_string($mysqli,$_GET["email"])."', pass='".password_hash($_GET["pass"], PASSWORD_DEFAULT)."'");
+	/*if(json_decode(http_post ("https://www.google.com/recaptcha/api/siteverify",array("secret"=>"6LdEKzIUAAAAAMbI8JehHalta9UU7jWA1oW7urQu","response"=>$_GET["response"]))["content"])->{"success"}!=1)
+		die('{"query":0,"error":10}');*/
+	$sql=mysqli_query($mysqli,"INSERT INTO users SET lastlogin=NOW(), md5='', admin=0, class=".intval($_GET["class"]).", surname='".mysqli_real_escape_string($mysqli,$_GET["surname"])."', name='".mysqli_real_escape_string($mysqli,$_GET["name"])."',login='".mysqli_real_escape_string($mysqli,$_GET["email"])."', pass='".password_hash($_GET["pass"], PASSWORD_DEFAULT)."'");
 	if(!$sql)
-		die('{"query":0,"error":-1}');
+		die('{"query":0,"error":11}');
 	else
 		die('{"query":1}');
 ?>

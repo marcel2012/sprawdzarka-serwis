@@ -6,20 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
     <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
-    <title>IKSDE - Plik</title>
+    <title>IKSDE - Edytuj kurs</title>
     <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
     <meta name="theme-color" content="#1aa98d">
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
+    <style>
+        textarea {
+            width: 100%;
+            min-height: 100px;
+        }
+    </style>
     <script>
         function init() {
             get(
-                'getfile', {
-                    name: window.location.hash.substr(1),
+                'getgroupid', {
+                    id: window.location.hash.substr(1),
                     sessid: localStorage.sessid
                 },
                 function(data) {
-                    document.getElementById("file").innerHTML = data.file.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
+                    document.getElementById("name").value = data.group[0].name;
+                    document.getElementById("desc").value = data.group[0].desc.replace(/<br>/g, '\n');
                 }, ['Nie masz uprawnień']
             );
         }
@@ -65,7 +72,32 @@
         </div>
     </div>
     <div class="main-box">
-        <p id="file"></p>
+        <h3>Nazwa kursu</h3>
+        <input type="text" maxlength="30" id="name">
+        <h3>Opis</h3>
+        <textarea maxlength="100" id="desc"></textarea>
+        <input type="submit" value="zapisz" onclick="
+        get(
+            'editgroup', {
+                sessid: localStorage.sessid,
+                id:window.location.hash.substr(1),
+                name:document.getElementById('name').value,
+                desc:document.getElementById('desc').value.replace(/\n/g, '<br>')
+            },
+            function(data) {
+                window.history.back();
+            }, ['Nie masz uprawnień']
+        );" />
+        <u><h5 onclick="
+        get(
+            'delgroup', {
+                sessid: localStorage.sessid,
+                id:window.location.hash.substr(1)
+            },
+            function(data) {
+                window.history.back();
+            }, ['Nie masz uprawnień']
+        );">Usuń</h5></u>
     </div>
 </body>
 

@@ -12,7 +12,7 @@
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
     <script>
-        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd"];
+        var statusy = ["Sprawdzanie...", "OK", "Błąd kompilacji", "Błąd", "Błąd skryptu sprawdzarnia"];
 
         function init() {
             document.getElementById("sessid").value = localStorage.sessid;
@@ -55,6 +55,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
             <a href="/sprawdzarka/main/">
 					Zgłoszenia
 				</a>
@@ -90,7 +95,10 @@
             <input id="sessid" name="sessid" type="hidden" required="" />
             <select name="zadanie" id="select">
 				</select>
-            <input name="file" type="file" required="" accept=".cpp" />
+            <div class="file-upload">
+                <input name="file" type="file" onchange="this.parentNode.childNodes[3].value=(this.value.length?this.value.substr(this.value.lastIndexOf('\\')+1):'Wybierz');" required="" accept=".cpp" />
+                <input type="fakefile" onclick="this.parentNode.childNodes[1].click();" value="Wybierz" readonly/>
+            </div>
             <input type="submit" value="Wgraj" />
         </form>
         <br>

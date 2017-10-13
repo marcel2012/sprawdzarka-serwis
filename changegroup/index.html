@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
     <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
-    <title>IKSDE - Plik</title>
+    <title>IKSDE - Kursy</title>
     <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
     <meta name="theme-color" content="#1aa98d">
     <meta name="msapplication-navbutton-color" content="#1aa98d">
@@ -14,12 +14,27 @@
     <script>
         function init() {
             get(
-                'getfile', {
-                    name: window.location.hash.substr(1),
+                'getgroups', {
                     sessid: localStorage.sessid
                 },
                 function(data) {
-                    document.getElementById("file").innerHTML = data.file.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
+                    for (i = 0; i < data.group.length; i++) {
+                        tmp = '<div onclick="get(\
+				\'setgroup\',\
+                {\
+                    id:' + data.group[i].id + ',\
+					sessid:localStorage.sessid\
+				},\
+				function(data)\
+				{\
+					window.location.href=\'/sprawdzarka/main/\';\
+				});" class="main-box">\
+                            <h3>' + data.group[i].name + '</h3>\
+                            <h5>' + data.group[i].desc + '</h5>\
+                            <u><h5>Wybierz</h5></u>\
+                        </div>';
+                        document.body.innerHTML += tmp;
+                    }
                 }, ['Nie masz uprawnień']
             );
         }
@@ -32,22 +47,22 @@
     </div>
     <div class="main-menu">
         <div>
-            <a href="/sprawdzarka/admin/changegroup/">
-                        Kursy
-                    </a>
+            <a href="/sprawdzarka/changegroup/">
+					Kursy
+				</a>
         </div>
         <div>
-            <a href="/sprawdzarka/admin/main/">
-                        Zgłoszenia
-                    </a>
+            <a href="/sprawdzarka/main/">
+					Zgłoszenia
+				</a>
         </div>
         <div>
-            <a href="/sprawdzarka/admin/zadania/">
-                        Zadania
-                    </a>
+            <a href="/sprawdzarka/zadania/">
+					Zadania
+				</a>
         </div>
         <div>
-            <a href="/sprawdzarka/admin/ranking/">
+            <a href="/sprawdzarka/ranking/">
 					Ranking
 				</a>
         </div>
@@ -63,9 +78,6 @@
 					window.location.href='/sprawdzarka/';
 				});">Wyloguj</a>
         </div>
-    </div>
-    <div class="main-box">
-        <p id="file"></p>
     </div>
 </body>
 

@@ -18,7 +18,19 @@ function sorting($a, $b)
 		if($b)
 			$str=htmlentities($str);
         return json_encode($str);
-    }
+	}
+	function http_post ($url, $data)
+	{
+		$data_url = http_build_query ($data);
+		$data_len = strlen ($data_url);
+	
+		return array ('content'=>file_get_contents ($url, false, stream_context_create (array ('http'=>array ('method'=>'POST'
+				, 'header'=>"Connection: close\r\nContent-Length: $data_len\r\n"
+				, 'content'=>$data_url
+				))))
+			, 'headers'=>$http_response_header
+			);
+	}
 	error_reporting(0);
 	header('Content-type: application/json');
 	header('access-control-allow-origin: *');

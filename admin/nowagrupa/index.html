@@ -6,27 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
     <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
-    <title>IKSDE - Plik</title>
+    <title>IKSDE - Nowy kurs</title>
     <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
     <meta name="theme-color" content="#1aa98d">
     <meta name="msapplication-navbutton-color" content="#1aa98d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#1aa98d">
-    <script>
-        function init() {
-            get(
-                'getfile', {
-                    name: window.location.hash.substr(1),
-                    sessid: localStorage.sessid
-                },
-                function(data) {
-                    document.getElementById("file").innerHTML = data.file.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
-                }, ['Nie masz uprawnień']
-            );
+    <style>
+        textarea {
+            width: 100%;
+            min-height: 100px;
         }
-    </script>
+    </style>
 </head>
 
-<body onload="init()">
+<body>
     <div class="main-head">
         Internetowy Kwalifikowany System Doskonalenia Edukacji
     </div>
@@ -65,7 +58,21 @@
         </div>
     </div>
     <div class="main-box">
-        <p id="file"></p>
+        <h3>Nazwa kursu</h3>
+        <input type="text" maxlength="30" id="name">
+        <h3>Opis</h3>
+        <textarea maxlength="100" id="desc"></textarea>
+        <input type="submit" value="zapisz" onclick="
+        get(
+            'addgroup', {
+                sessid: localStorage.sessid,
+                name:document.getElementById('name').value.replace(/\n/g, '<br>'),
+                desc:document.getElementById('desc').value.replace(/\n/g, '<br>')
+            },
+            function(data) {
+                window.history.back();
+            }, ['Nie masz uprawnień']
+        );" />
     </div>
 </body>
 

@@ -15,7 +15,7 @@
 			echo ",";
 		else
 			$f=true;
-		echo '{"maxtime":'.$row["maxtime"].',"id":'.$row["id"].',"visible":'.$row["visible"].',"tests":'.escape($row["tests"],false).',"nazwa":'.escape($row["name"]).',"wejscie":'.escape($row["input"],false).',"wyjscie":'.escape($row["output"],false).',"input":'.escape($row["inputtest"],false).',"output":'.escape($row["outputtest"],false).',"opis":'.escape($row["description"],false).',"wynik":'.intval($row["wynik"],false).'}';
+		echo '{"tester":'.$row["tester"].',"maxtime":'.$row["maxtime"].',"id":'.$row["id"].',"groups":'.$row["groups"].',"visible":'.$row["visible"].',"tests":'.escape($row["tests"],false).',"nazwa":'.escape($row["name"]).',"wejscie":'.escape($row["input"],false).',"wyjscie":'.escape($row["output"],false).',"input":'.escape($row["inputtest"],false).',"output":'.escape($row["outputtest"],false).',"opis":'.escape($row["description"],false).',"wynik":'.intval($row["wynik"],false).'}';
 	}
 	echo ']}';
 ?>

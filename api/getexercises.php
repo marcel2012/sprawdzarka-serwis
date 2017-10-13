@@ -4,7 +4,7 @@
 	session_start();
 	if(!isset($_SESSION["id"]))
 		die('{"query":0,"error":-2}');
-	$sql=mysqli_query($mysqli,"SELECT visible,id,name,(SELECT wynik FROM request WHERE `user`=".$_SESSION["id"]." AND zadanie=zadanie.id ORDER BY id DESC LIMIT 1) as wynik FROM zadanie WHERE ".(!isset($_SESSION["admin"])?"visible=1":"1")." ORDER BY id DESC");
+	$sql=mysqli_query($mysqli,"SELECT visible,id,name,(SELECT wynik FROM request WHERE `user`=".$_SESSION["id"]." AND zadanie=zadanie.id ORDER BY id DESC LIMIT 1) as wynik FROM zadanie WHERE ".(!isset($_SESSION["admin"])?"visible=1":"1")." AND groups=".$_SESSION["groups"]." ORDER BY id DESC");
 	if(!sql)
 		die('{"query":0,"error":-1}');
 	echo '{"query":1,"exercise":[';

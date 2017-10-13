@@ -28,14 +28,15 @@
                             return a.sum2 - b.sum2;
                     });
                     tmp += "<td>Razem</td></tr>";
-                    for (i = 0; i < data.users.length; i++) {
-                        tmp += "<tr>";
-                        tmp += "<td>" + data.users[i].name + "</td>";
-                        for (j = 0; j < data.users[i].zadania.length; j++) {
-                            tmp += "<td onclick='" + (data.users[i].zadania[j].wynik >= 0 ? "window.location.href=\"/sprawdzarka/admin/file#" + data.users[i].zadania[j].id + ".cpp\"" : "") + "' style='background: " + getcolor(data.users[i].zadania[j].wynik) + "'>" + (data.users[i].zadania[j].wynik >= 0 ? data.users[i].zadania[j].wynik + " (" + data.users[i].zadania[j].sum + ")" : "") + "</td>";
+                    for (i = 0; i < data.users.length; i++)
+                        if (data.users[i].sum2) {
+                            tmp += "<tr>";
+                            tmp += "<td>" + data.users[i].name + "</td>";
+                            for (j = 0; j < data.users[i].zadania.length; j++) {
+                                tmp += "<td onclick='" + (data.users[i].zadania[j].wynik >= 0 ? "window.location.href=\"/sprawdzarka/admin/file#" + data.users[i].zadania[j].id + ".cpp\"" : "") + "' style='background: " + getcolor(data.users[i].zadania[j].wynik) + "'>" + (data.users[i].zadania[j].wynik >= 0 ? data.users[i].zadania[j].wynik + " (" + data.users[i].zadania[j].sum + ")" : "") + "</td>";
+                            }
+                            tmp += "<td>" + data.users[i].sum + " (" + data.users[i].sum2 + ")" + "</td></tr>";
                         }
-                        tmp += "<td>" + data.users[i].sum + " (" + data.users[i].sum2 + ")" + "</td></tr>";
-                    }
                     document.getElementById('table').innerHTML += tmp;
                 }, ['Nie masz uprawnień']
             );
@@ -49,6 +50,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
             <a href="/sprawdzarka/admin/main/">
 					Zgłoszenia
 				</a>
@@ -57,11 +63,6 @@
             <a href="/sprawdzarka/admin/zadania/">
 					Zadania
 				</a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-                        Dodaj zadanie
-                    </a>
         </div>
         <div>
             <a href="/sprawdzarka/admin/ranking/">

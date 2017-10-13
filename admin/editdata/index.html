@@ -17,6 +17,8 @@
         function init() {
             document.getElementById("sessid").value = localStorage.sessid;
             document.getElementById("zadanie").value = window.location.hash.substr(1);
+            document.getElementById("sessid2").value = localStorage.sessid;
+            document.getElementById("zadanie2").value = window.location.hash.substr(1);
             get(
                 'getexerciseiddata', {
                     id: window.location.hash.substr(1),
@@ -56,6 +58,11 @@
     </div>
     <div class="main-menu">
         <div>
+            <a href="/sprawdzarka/admin/changegroup/">
+                        Kursy
+                    </a>
+        </div>
+        <div>
             <a href="/sprawdzarka/admin/main/">
 					Zgłoszenia
 				</a>
@@ -63,11 +70,6 @@
         <div>
             <a href="/sprawdzarka/admin/zadania/">
 					Zadania
-				</a>
-        </div>
-        <div>
-            <a href="/sprawdzarka/admin/nowe/">
-					Dodaj zadanie
 				</a>
         </div>
         <div>
@@ -95,11 +97,24 @@
         <form method="POST" action="/sprawdzarka/uploaddata/" enctype="multipart/form-data">
             <input id="sessid" name="sessid" type="hidden" required="" />
             <input id="zadanie" name="zadanie" type="hidden" required="" /> Wejście
-            <br><br>
-            <input name="file1" type="file" required="" accept=".txt" />
-            <br><br>Wyjście
-            <br><br>
-            <input name="file2" type="file" required="" accept=".txt" />
+            <div class="file-upload">
+                <input name="file1" type="file" onchange="this.parentNode.childNodes[3].value=(this.value.length?this.value.substr(this.value.lastIndexOf('\\')+1):'Wybierz');" required="" accept=".txt" />
+                <input type="fakefile" onclick="this.parentNode.childNodes[1].click();" value="Wybierz" readonly/>
+            </div>
+            Wyjście
+            <div class="file-upload">
+                <input name="file2" type="file" onchange="this.parentNode.childNodes[3].value=(this.value.length?this.value.substr(this.value.lastIndexOf('\\')+1):'Wybierz');" required="" accept=".txt" />
+                <input type="fakefile" onclick="this.parentNode.childNodes[1].click();" value="Wybierz" readonly/>
+            </div>
+            <input type="submit" value="Wgraj" />
+        </form>
+        <h3>lub</h3>
+        <form method="POST" action="/sprawdzarka/api/addtest.php" enctype="multipart/form-data">
+            <input id="sessid2" name="sessid" type="hidden" required="" />
+            <input id="zadanie2" name="zadanie" type="hidden" required="" /> Wejście<br>
+            <textarea name="in" rows="3" required=""></textarea><br>Wyjście
+            <br>
+            <textarea name="out" rows="3" required=""></textarea>
             <input type="submit" value="Wgraj" />
         </form>
         <br>

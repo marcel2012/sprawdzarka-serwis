@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/sprawdzarka/js/script.js"></script>
     <link rel="stylesheet" href="/sprawdzarka/css/style.css" type="text/css" />
-    <title>IKSDE - Plik</title>
+    <title>IKSDE - Kursy</title>
     <link rel="shortcut icon" type="image/png" href="/sprawdzarka/img/logo.png" />
     <meta name="theme-color" content="#1aa98d">
     <meta name="msapplication-navbutton-color" content="#1aa98d">
@@ -14,12 +14,28 @@
     <script>
         function init() {
             get(
-                'getfile', {
-                    name: window.location.hash.substr(1),
+                'getgroups', {
                     sessid: localStorage.sessid
                 },
                 function(data) {
-                    document.getElementById("file").innerHTML = data.file.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
+                    for (i = 0; i < data.group.length; i++) {
+                        tmp = '<div onclick="get(\
+				\'setgroup\',\
+                {\
+                    id:' + data.group[i].id + ',\
+					sessid:localStorage.sessid\
+				},\
+				function(data)\
+				{\
+					window.location.href=\'/sprawdzarka/admin/main/\';\
+				});" class="main-box">\
+                            <h3>' + data.group[i].name + '</h3>\
+                            <h5>' + data.group[i].desc + '</h5>\
+                            <u><h5 onclick="event.stopPropagation();window.location.href=\'/sprawdzarka/admin/editgroup/#' + data.group[i].id + '\'">Edytuj</h5></u>\
+                            </div>';
+                        document.body.innerHTML += tmp;
+                    }
+                    document.body.innerHTML += "<center><input onclick='window.location.href=\"/sprawdzarka/admin/nowagrupa/\"' type='submit' value='Nowy kurs'/></center>";
                 }, ['Nie masz uprawnień']
             );
         }
@@ -38,13 +54,13 @@
         </div>
         <div>
             <a href="/sprawdzarka/admin/main/">
-                        Zgłoszenia
-                    </a>
+					Zgłoszenia
+				</a>
         </div>
         <div>
             <a href="/sprawdzarka/admin/zadania/">
-                        Zadania
-                    </a>
+					Zadania
+				</a>
         </div>
         <div>
             <a href="/sprawdzarka/admin/ranking/">
@@ -63,9 +79,6 @@
 					window.location.href='/sprawdzarka/';
 				});">Wyloguj</a>
         </div>
-    </div>
-    <div class="main-box">
-        <p id="file"></p>
     </div>
 </body>
 

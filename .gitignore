@@ -1,2 +1,5 @@
 api/mysql_password.php
-api/mysql_password.php
+api/reset.php
+api/newpassword.php
+reset
+newpassword
